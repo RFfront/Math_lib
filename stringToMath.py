@@ -1,21 +1,52 @@
-class mathObj():
-    def __init__(self,stroka):
-        #status 2- init eror
-        #status 1- sucsess init
-        #status "at string: " error at
-        self.stroka=stroka
+class MathWrongStr(Exception):
+    print("!!!!!!!!!!!!!!!!!!!!!!!\n\nstring not correct\n\n!!!!!!!!!!!!!!!!!!!!!!!")
 
-        status =1
+class mathObj:
+    num=0
+    stephen=1
+    #child=mathObj()
+    def __init__(self,stroka,mathchild=[]):
+        self.stroka=stroka
+        self.mathchild=mathchild
     def __str__(self):
         return self.stroka
-#class oper()
-a=str("2f+12+1g+r3+#[t2]")
-af=a.find("#[")
-if af!=int(-1):
-    a[af:].find("]")=
-else:
-    ae
+    """
+    def toAnthStr(self):
+        return "mathObj"+
+    """
 
+#class oper()
+a=str("(2x+34)-(11x+20x")
+a="("+a+")"
+
+def findParenthesisPrimitives(stroka):
+    #stroka
+    MOL=[]
+    opened=0
+    #mathObj
+    a=0
+    while a!=-1:
+        for i in range(len(stroka)):
+            if stroka[i]=="(":
+                opened=i
+        if opened!=0:
+
+            Tlast=stroka[opened:].find(")")
+            if Tlast!=-1:
+                primitive=stroka[opened:opened+Tlast+1]
+                stroka=stroka[:opened]+"#mathObj"+str(a)+"#"+stroka[opened+Tlast+1:]
+                MOL.append(mathObj(primitive))
+                #print(primitive)
+                a+=1
+                #print(stroka)
+            else:
+                raise MathWrongStr()
+        else:
+            a=-1
+    return [MOL,stroka]
+
+print(findParenthesisPrimitives(a))
+#print(a)
 
 lastPlus=[]
 for i in range(len(a)):
