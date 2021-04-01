@@ -66,6 +66,28 @@ class Matrix:
         return self
     def __neg__(self):
         return self.__mul__(-1)
+    def det(self):
+        if self.__n==self.__m:
+
+            def minor(array):
+                return array[0][0] * array[1][1] - array[1][0] * array[0][1]
+
+            def detFind(array):
+                if len(array[0]) > 2:
+                    result = 0
+                    for i in range(len(array[0])):
+                        new_arr = []
+                        for j in range(len(array[0])):
+                            if j != i:
+                                new_arr.append([array[j][k] for k in range(1, len(array[0]))])
+                        result += detFind(new_arr) * array[i][0] * (-1 + 2 * ((i + 1) % 2))
+                    return result
+                else:
+                    return minor(array)
+            return detFind(self.__listAr)
+        else:
+            raise ValueError("Matrix must be square")
+
 a=[
 [1,2,3],
 [1,3,5],
@@ -77,9 +99,9 @@ b=[
 [0,10,-5]
 ]
 a=[
-[5,0,2,3],
-[4,1,5,3],
-[3,1,-1,2]
+[5,0,2],
+[4,1,5],
+[3,1,-1]
 ]
 b=[
 [6],
@@ -89,7 +111,6 @@ b=[
 ]
 mat=Matrix(a)
 mat2=Matrix(b)
-print(mat)
-print(mat2)
+print(mat.det())
 
 print(mat*mat2)
