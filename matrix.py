@@ -69,11 +69,23 @@ class Matrix:
     def det(self):
         if self.__n==self.__m:
 
-            def minor(array):
-                return array[0][0] * array[1][1] - array[1][0] * array[0][1]
+            def mi2(ar):
+                return ar[0][0] * ar[1][1] - ar[1][0] * ar[0][1]
+            def mi3(ar):
+                return \
+                (ar[0][0] * ar[1][1] * ar[2][2]) \
+                + (ar[0][1] * ar[1][2] * ar[2][0])\
+                + (ar[0][2]*ar[1][0]* ar[2][1])\
+                -(ar[0][2]*ar[1][1]*ar[2][0])\
+                -(ar[0][0]*ar[1][2]*ar[2][1])\
+                -(ar[0][1]*ar[1][0]*ar[2][2])
 
             def detFind(array):
-                if len(array[0]) > 2:
+                if self.__n==1:
+                    return array[0][0]
+                if self.__n == 2:
+                    return mi2(array)
+                if self.__n > 3:
                     result = 0
                     for i in range(len(array[0])):
                         new_arr = []
@@ -83,34 +95,7 @@ class Matrix:
                         result += detFind(new_arr) * array[i][0] * (-1 + 2 * ((i + 1) % 2))
                     return result
                 else:
-                    return minor(array)
+                    return mi3(array)
             return detFind(self.__listAr)
         else:
             raise ValueError("Matrix must be square")
-
-a=[
-[1,2,3],
-[1,3,5],
-[6,6,6]
-]
-b=[
-[-9,1,3],
-[12,7,1],
-[0,10,-5]
-]
-a=[
-[5,0,2],
-[4,1,5],
-[3,1,-1]
-]
-b=[
-[6],
-[-2],
-[7],
-[4]
-]
-mat=Matrix(a)
-mat2=Matrix(b)
-print(mat.det())
-
-print(mat*mat2)
