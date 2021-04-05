@@ -54,12 +54,30 @@ class Matrix:
                     t=[]
                 self.__listAr=m3
         return self
+    def genEMat(self,n=0):
+        emat=[]
+
+        def genEma(size):
+            tmp=[]
+            for i in range(size):
+                for g in range(size):
+                    if i==g:
+                        tmp.append(1)
+                    else:
+                        tmp.append(0)
+                emat.append(tmp.copy())
+                tmp.clear()
+        if n==0:
+            genEma(self.__n)
+        else:
+            genEma(n)
+        return Matrix(emat)
 
     def __pow__(self,exp):
         if abs(exp) >50:
             print("too big exp, be careful!")
         if exp==0:
-            raise Exception("oops, here must be a E matrix")
+            self=self.genEMat()
         else:
             for i in range(exp):
                 self.__mul__(self)
