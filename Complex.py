@@ -21,6 +21,3 @@ class MoComplex(complex):
         elif a==0 and b<0:
             retu=f"-Pi/2"
         return retu
-p=MoComplex('3-4j')
-
-print(p.fi())
