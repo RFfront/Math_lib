@@ -1,3 +1,4 @@
+from vector import Vect
 class Matrix:
     def __init__(self,listA):
         self.__listAr=listA
@@ -15,6 +16,8 @@ class Matrix:
     def m(self):
         return self.__m
 
+    def copy(self):
+        return Matrix(self.__listAr)
 
     def __str__(self): #"Matrix obj {}x{}".format(self.__m,self.__n)
         sgr=''
@@ -23,37 +26,42 @@ class Matrix:
             sgr+=" ".join(h)
             sgr+="\n"
         return sgr
+
     def __add__(self, other):
+        newMat=self.copy()
         if not isinstance(other,Matrix):
             raise ValueError("you try add not Matrix")
         else:
-            if self.__n == other.__n and self.__m == other.__m:
-                for i in range(len(self.__listAr)):
-                    for g in range(len(self.__listAr[i])):
-                        self.__listAr[i][g]+=other.__listAr[i][g]
+            if newMat.__n == other.__n and newMat.__m == other.__m:
+                for i in range(len(newMat.__listAr)):
+                    for g in range(len(newMat.__listAr[i])):
+                        newMat.__listAr[i][g]+=other.__listAr[i][g]
             else:
                 raise ValueError("you try add Matrix different sizes")
-        return self
+        return newMat
+
     def __mul__(self, other):
+        newMat=self.copy()
         if not isinstance(other,Matrix):
-            for i in range(len(self.__listAr)):
-                for g in range(len(self.__listAr[i])):
-                    self.__listAr[i][g]*=other
+            for i in range(len(newMat.__listAr)):
+                for g in range(len(newMat.__listAr[i])):
+                    newMat.__listAr[i][g]*=other
         else:
-            if self.__n == other.__m:
+            if newMat.__n == other.__m:
                 s=0
                 t=[]
                 m3=[]
-                for z in range(0,self.__m):
+                for z in range(0,newMat.__m):
                     for j in range(0,other.__n):
-                        for i in range(0,self.__n):
-                           s+=self.__listAr[z][i]*other.__listAr[i][j]
+                        for i in range(0,newMat.__n):
+                           s+=newMat.__listAr[z][i]*other.__listAr[i][j]
                         t.append(s)
                         s=0
                     m3.append(t)
                     t=[]
-                self.__listAr=m3
-        return self
+                newMat.__listAr=m3
+        return newMat
+
     def genEMat(self,n=0):
         emat=[]
 
@@ -82,8 +90,10 @@ class Matrix:
             for i in range(exp):
                 self.__mul__(self)
         return self
+
     def __neg__(self):
         return self.__mul__(-1)
+
     def det(self):
         if self.__n==self.__m:
 
@@ -99,12 +109,13 @@ class Matrix:
                 -(ar[0][1]*ar[1][0]*ar[2][2])
 
             def detFind(array):
-                if self.__n==1:
+                if len(array[0])==1:
                     return array[0][0]
-                if self.__n == 2:
+                if len(array[0]) == 2:
                     return mi2(array)
-                if self.__n > 3:
+                if len(array[0]) > 3:
                     result = 0
+
                     for i in range(len(array[0])):
                         new_arr = []
                         for j in range(len(array[0])):
@@ -117,3 +128,22 @@ class Matrix:
             return detFind(self.__listAr)
         else:
             raise ValueError("Matrix must be square")
+
+    def lux(self):
+        newMat=self.copy()
+        for i in range(len(newMat.__listAr)):
+            for m in range(len(newMat.__listAr)):
+                if m>i:
+                    vec1=Vect(newMat.__listAr[i])
+                    vec2=Vect(newMat.__listAr[m])
+                    vec1mul=newMat.__listAr[m][i]
+                    vec2mul=newMat.__listAr[i][i]
+                    vec3=vec2*vec2mul-vec1*vec1mul
+                    newMat.__listAr[m]=vec3.arg
+                    print(vec2mul,vec2,'-',vec1mul,vec1,"=",vec3)
+                    #print(newMat.__listAr)
+        #newMat.__listAr[2]=[0,0,1]
+
+        return newMat
+
+
