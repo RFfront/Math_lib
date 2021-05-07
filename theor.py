@@ -14,6 +14,10 @@ def mult(to,frome=0):
 def c(m,n):
     return mult(n,n-m)/mult(m)
 
+def a(m,n,p):
+    if p:return n**m
+    else:return mult(5,3)
+
 def bern(n,p,k):
     decimal.getcontext().prec = 5    #  устанавливаем точность
     re=  Decimal(c(k,n))*   (Decimal(p)**k) *    ((1-Decimal(p))**(n-k) )
@@ -21,7 +25,6 @@ def bern(n,p,k):
 
 
 def gaussFoLaplas(x):
-
     x=Decimal(x)
 
     t=(1/(2*Decimal(pi)).sqrt())
@@ -39,6 +42,7 @@ def cdf(x):
     """
     Расчет функции Лапласа.
     """
+    decimal.getcontext().prec = 9    #  устанавливаем точность
 
     x = x / Decimal(1.414213562)
     a1 = Decimal(0.254829592)
@@ -62,8 +66,19 @@ def laplas(n,p,k,k2=False):
     decimal.getcontext().prec = 6
     if not k2:
         return (1/((n*p*q).sqrt())*gaussFoLaplas(xFoLap(n,p,k)))
+    else:
+        return cdf(xFoLap(n,p,k2))-cdf(xFoLap(n,p,k))
 
-print(laplas(400,Decimal(0.5),225))
-print(bern(400,Decimal(0.5),225))
+def mF(table):
+    sum=0
+    for k in table.items():
+        sum+=k[0]*k[1]
+    return sum
 
-print(cdf(2.5))
+def d(table,m=None):
+    if not m:
+        m=mF(table)
+    sum=0
+    for k in table.items():
+        sum+=(k[0]**2)*k[1]
+    return sum-(m**2)
