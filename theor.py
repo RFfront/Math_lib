@@ -1,7 +1,7 @@
 import decimal      #  импортируем модуль
 from decimal import Decimal
 from fractions import Fraction
-from math import e,pi,exp
+from math import e,pi,exp,sqrt
 
 
 def mult(to,frome=0):
@@ -27,9 +27,11 @@ def bern(n,p,k):
 def gaussFoLaplas(x):
     x=Decimal(x)
 
-    t=(1/(2*Decimal(pi)).sqrt())
+    t=(1/sqrt(2*Decimal(pi)) )
+    t=Decimal(t)
     figulina=-((x**2)/2)
     ee=Decimal(e)**figulina
+    ee=Decimal(ee)
     ret=t * ee
     return ret
 
@@ -59,15 +61,23 @@ def cdf(x):
 
 def xFoLap(n,p,k):
     q=1-p
-    return (k-n*p)/((n*p*q).sqrt())
+    return (k-n*p)/(sqrt(n*p*q))
 
 def laplas(n,p,k,k2=False):
     q=1-p
     decimal.getcontext().prec = 6
     if not k2:
-        return (1/((n*p*q).sqrt())*gaussFoLaplas(xFoLap(n,p,k)))
+        ga=Decimal(1/(sqrt(n*p*q)))
+        return ga*gaussFoLaplas(xFoLap(n,p,k))
     else:
-        return cdf(xFoLap(n,p,k2))-cdf(xFoLap(n,p,k))
+        a=cdf(xFoLap(n,p,k2))
+        b=cdf(xFoLap(n,p,k))
+        print(a,b)
+        return a-b
+def puason(n,p,k):
+    h=n*p
+    #print(h)
+    return (h**k)*(e**(-h))/mult(k)
 
 def mF(table):
     sum=0
